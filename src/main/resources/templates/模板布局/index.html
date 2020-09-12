@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- begin::Head -->
+<head>
+    <meta charset="utf-8"/>
+    <title>
+        thymeleaf 表格演示
+    </title>
+</head>
+<body class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
+
+<input type="text" value="我是文本框1">
+<span th:text="${session.name}">你好name</span>
+<hr>
+<span th:utext="${session.name}">你好name</span>
+<hr>
+<span>你好  [[${session.name}]]</span><br>
+<span>你好  [(${session.name})]</span>
+<hr>
+<a href="/show?id=5&name=zhangsan">点击提交1</a>
+<br>
+<a th:href="@{show(id=5,name=${session.name})}">点击提交2</a>
+
+<br>
+<span th:if="${session.id} != nulll">你好id</span>
+<br>
+<input type="text" th:value="我是文本框2">
+
+<table>
+    <th:block th:each="user : ${users}">
+        <tr>
+            <td th:text="${user.name}">name</td>
+            <td th:text="${user.age}">age</td>
+        </tr>
+        <tr>
+            <td colspan="2" th:text="${user.id}">id</td>
+        </tr>
+    </th:block>
+
+
+</table>
+<hr>
+<table th:each="user : ${users}">
+    <table>
+        <tr>
+            <td th:text="${user.name}">...</td>
+            <td th:text="${user.age}">...</td> </tr>
+        <tr>
+            <td colspan="2" th:text="${user.id}">...</td>
+        </tr>
+        <!--/*/ </th:block> /*/-->
+    </table>
+</table>
+
+<body>
+<!--后台传出：model.addAttribute("info", "Love you <b>中国</b>");-->
+<!--/*前者会转义，后者不会转义*/-->
+<p>[[${info}]]</p>
+<p>[(${info})]</p>
+
+<!--/*可以是任意的数据类型，如普通的文本，与 th:text、th:utext完全等价*/-->
+<p>[[Love]]</p>
+<p>[['I Love You Baby']]</p>
+<p>[[<strong>9527</strong>]]</p>
+<p>[(<strong>9527</strong>)]</p>
+</body>
+
+
+<span>你好  [[${session.name}]]</span><br>
+<!--　若是想在标签中代码块内直接地使用model的对象值-->
+<!--th:inline="none" 禁用内联-->
+<p th:inline="text">Hello, [[${str}]]</p>
+
+<br><br><br><br><br><br>
+<div th:include="/模板布局/footer :: copy"></div>
+<hr>
+<div th:include="/模板布局/footer :: #copy-section"></div>
+<!--　若是想在javascript代码块内直接地使用model的对象值-->
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    var max = /*[[${maxSumOfDateInYear}]]*/ 20;
+    alert(max);
+    /*]]>*/
+</script>
+</body>
+</html>
